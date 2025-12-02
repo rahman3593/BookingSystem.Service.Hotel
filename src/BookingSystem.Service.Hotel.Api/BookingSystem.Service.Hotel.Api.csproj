@@ -8,6 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookingSystem.Service.Hotel.Application\BookingSystem.Service.Hotel.Application.csproj" />
+    <ProjectReference Include="..\BookingSystem.Service.Hotel.Infrastructure\BookingSystem.Service.Hotel.Infrastructure.csproj" />
+    <ProjectReference Include="..\BookingSystem.Service.Hotel.Persistence\BookingSystem.Service.Hotel.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
