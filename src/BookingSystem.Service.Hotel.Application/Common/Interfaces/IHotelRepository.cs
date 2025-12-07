@@ -8,7 +8,6 @@ namespace BookingSystem.Service.Hotel.Application.Common.Interfaces
         Task<List<Domain.Entities.Hotel>> GetAllAsync();
         Task<Domain.Entities.Hotel> AddAsync(Domain.Entities.Hotel hotel);
         Task  UpdateAsync(Domain.Entities.Hotel hotel);
-
-        Task DeleteAsync(Domain.Entities.Hotel hotel);
+        Task DeleteAsync(int id);
     }
 }
