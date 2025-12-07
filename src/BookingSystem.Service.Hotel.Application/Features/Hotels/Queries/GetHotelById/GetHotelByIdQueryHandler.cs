@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BookingSystem.Service.Hotel.Application.Common.Interfaces;
 using BookingSystem.Service.Hotel.Application.DTOs;
 using BookingSystem.Service.Hotel.Domain.Exceptions;
@@ -10,13 +11,15 @@ using MediatR;
 
 namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHotelById
 {
-    public class GetHotelByIdHandler : IRequestHandler<GetHotelByIdQuery, DTOs.HotelDto>
+    public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, DTOs.HotelDto>
     {
         private readonly IHotelRepository _hotelRepository;
+        private readonly IMapper _mapper;
 
-        public GetHotelByIdHandler(IHotelRepository hotelRepository)
+        public GetHotelByIdQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
         {
             _hotelRepository = hotelRepository;
+            _mapper = mapper;
         }
         public async Task<HotelDto> Handle(GetHotelByIdQuery request, CancellationToken cancellationToken)
         {
@@ -27,26 +30,8 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHot
                 throw new HotelNotFoundException(request.HotelId);
             }
 
-            var hotelDto = new HotelDto
-            {
-                Id = hotel.Id,
-                Name = hotel.Name,
-                Description = hotel.Description,
-                StarRating = hotel.StarRating,
-                Status = hotel.Status.ToString(),
-                Street = hotel.Street,
-                City = hotel.City,
-                State = hotel.State,
-                Country = hotel.Country,
-                ZipCode = hotel.ZipCode,
-                Email = hotel.Email,
-                Phone = hotel.Phone,
-                Website = hotel.Website,
-                CreatedAt = hotel.CreatedAt,
-                UpdatedAt = hotel.UpdatedAt
-            };
-
-            return hotelDto;
+            return _mapper.Map<HotelDto>(hotel);
+            
         }
     }
 }
