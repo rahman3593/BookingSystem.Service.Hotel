@@ -12,6 +12,9 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.Creat
     public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, int>
     {
         private readonly IHotelRepository _hotelRepository;
+        public CreateHotelCommandHandler(IHotelRepository hotelRepository)
+        {
+            _hotelRepository = hotelRepository;        }
         public async Task<int> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
         {
             var hotel = new Domain.Entities.Hotel(name: request.Name,
