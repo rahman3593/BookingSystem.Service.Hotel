@@ -16,7 +16,9 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.Creat
                 .NotEmpty().WithMessage("Hotel name is required.")
                 .MaximumLength(200).WithMessage("Hotel name must not exceed 200 characters.");
 
-            RuleFor(x => x.Description).MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.");
+            RuleFor(x => x.Description).MaximumLength(1000)
+                .When(x=>!string.IsNullOrEmpty(x.Description))
+                .WithMessage("Description must not exceed 1000 characters.");
 
             RuleFor(x => x.City)
                .NotEmpty().WithMessage("City is required")

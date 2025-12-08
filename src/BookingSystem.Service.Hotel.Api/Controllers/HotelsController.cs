@@ -1,5 +1,7 @@
 ﻿using BookingSystem.Service.Hotel.Application.DTOs;
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.CreateHotel;
+using BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.DeleteHotel;
+using BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.UpdateHotel;
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHotelById;
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHotelsList;
 using MediatR;
@@ -34,7 +36,7 @@ namespace BookingSystem.Service.Hotel.Api.Controllers
         {
             var query = new GetHotelByIdQuery { HotelId = id };
             var hotel = await _mediator.Send(query);
-            if(hotel == null)
+            if (hotel == null)
             {
                 return NotFound($"Hotel with ID {id} not found");
             }
@@ -50,5 +52,29 @@ namespace BookingSystem.Service.Hotel.Api.Controllers
             return CreatedAtAction(nameof(GetHotelById), new { id = hotelId }, hotelId);
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> UpdateHotel(int id, [FromBody] UpdateHotelCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("Hotel ID mismatch");
+            }
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteHotel(int id)
+        {
+            var command = new DeleteHotelCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
+
+        }
     }
 }
