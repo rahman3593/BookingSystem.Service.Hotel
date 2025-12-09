@@ -44,6 +44,12 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.Updat
                 .MaximumLength(20)
                 .When(x => !string.IsNullOrEmpty(x.ZipCode))
                 .WithMessage("Zipcode must not exceed 20 characters");
+            RuleFor(x => x.StarRating)
+                .IsInEnum()
+                .WithMessage("Star rating must be between 1 and 5");
+            RuleFor(x => x.Status)
+                .IsInEnum()
+                .WithMessage("Status must be Active, Inactive, or UnderMaintenance");
         }
     }
 }

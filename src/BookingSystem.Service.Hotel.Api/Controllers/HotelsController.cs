@@ -4,6 +4,8 @@ using BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.DeleteHot
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.UpdateHotel;
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHotelById;
 using BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.GetHotelsList;
+using BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.SearchHotels;
+using BookingSystem.Service.Hotel.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +27,15 @@ namespace BookingSystem.Service.Hotel.Api.Controllers
         public async Task<ActionResult<List<HotelDto>>> GetAllHotels()
         {
             var query = new GetHotelsListQuery();
+            var hotels = await _mediator.Send(query);
+            return Ok(hotels);
+        }
+
+        [HttpGet("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<HotelDto>>> SearchHotels([FromQuery] string? city, [FromQuery] string? country, [FromQuery] StarRating? minStarRating, [FromQuery] HotelStatus? status)
+        {
+            var query = new SearchHotelsQuery { City = city, Country = country, MinStarRating = minStarRating, Status = status };
             var hotels = await _mediator.Send(query);
             return Ok(hotels);
         }

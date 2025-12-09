@@ -9,5 +9,6 @@ namespace BookingSystem.Service.Hotel.Application.Common.Interfaces
         Task<Domain.Entities.Hotel> AddAsync(Domain.Entities.Hotel hotel);
         Task  UpdateAsync(Domain.Entities.Hotel hotel);
         Task DeleteAsync(int id);
+        Task<List<Domain.Entities.Hotel>> SearchAsync(string? city, string? country, Domain.Enums.StarRating? starRating, Domain.Enums.HotelStatus? hotelStatus);
     }
 }

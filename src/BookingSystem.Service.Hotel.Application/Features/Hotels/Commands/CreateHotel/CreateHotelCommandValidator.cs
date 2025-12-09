@@ -39,7 +39,7 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.Creat
                 .MaximumLength(200).WithMessage("Website URL cannot exceed 200 characters");
 
             RuleFor(x => x.StarRating)
-                .IsInEnum().WithMessage("Invalid star rating");
+                .IsInEnum().WithMessage("Star rating must be between 1 and 5");
         }
     }
 }

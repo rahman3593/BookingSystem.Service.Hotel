@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookingSystem.Service.Hotel.Application.Common.Interfaces;
 using BookingSystem.Service.Hotel.Domain.Entities;
+using BookingSystem.Service.Hotel.Domain.Enums;
 using BookingSystem.Service.Hotel.Domain.Exceptions;
 using BookingSystem.Service.Hotel.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,18 @@ namespace BookingSystem.Service.Hotel.Persistence.Repositories
         public async Task<Domain.Entities.Hotel?> GetByIdAsync(int hotelId)
         {
             return await _context.Hotels.FirstOrDefaultAsync(h => h.Id == hotelId);
+        }
+
+        public async Task<List<Domain.Entities.Hotel>> SearchAsync(string? city, string? country, StarRating? starRating, HotelStatus? hotelStatus)
+        {
+            return await _context.Hotels
+                    .Where(h =>
+                        (string.IsNullOrEmpty(city) || h.City.ToLower().Contains(city.ToLower())) &&
+                        (string.IsNullOrEmpty(country) || h.Country.ToLower().Contains(country.ToLower())) &&
+                        (!starRating.HasValue || h.StarRating >= starRating.Value) &&
+                        (!hotelStatus.HasValue || h.Status == hotelStatus.Value)
+                    )
+                    .ToListAsync();
         }
 
         public async Task UpdateAsync(Domain.Entities.Hotel hotel)
