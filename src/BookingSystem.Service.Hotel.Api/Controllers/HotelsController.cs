@@ -33,9 +33,9 @@ namespace BookingSystem.Service.Hotel.Api.Controllers
 
         [HttpGet("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<HotelDto>>> SearchHotels([FromQuery] string? city, [FromQuery] string? country, [FromQuery] StarRating? minStarRating, [FromQuery] HotelStatus? status)
+        public async Task<ActionResult<List<HotelDto>>> SearchHotels([FromQuery] string? city, [FromQuery] string? country, [FromQuery] StarRating? minStarRating, [FromQuery] HotelStatus? status, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var query = new SearchHotelsQuery { City = city, Country = country, MinStarRating = minStarRating, Status = status };
+            var query = new SearchHotelsQuery { City = city, Country = country, MinStarRating = minStarRating, Status = status, PageNumber = pageNumber, PageSize = pageSize };
             var hotels = await _mediator.Send(query);
             return Ok(hotels);
         }

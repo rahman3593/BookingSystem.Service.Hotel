@@ -45,16 +45,20 @@ namespace BookingSystem.Service.Hotel.Persistence.Repositories
             return await _context.Hotels.FirstOrDefaultAsync(h => h.Id == hotelId);
         }
 
-        public async Task<List<Domain.Entities.Hotel>> SearchAsync(string? city, string? country, StarRating? starRating, HotelStatus? hotelStatus)
+        public async Task<(List<Domain.Entities.Hotel> Hotels, int TotalCount)> SearchAsync(string? city, string? country, StarRating? starRating, HotelStatus? hotelStatus, int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.Hotels
+            var query = _context.Hotels
                     .Where(h =>
                         (string.IsNullOrEmpty(city) || h.City.ToLower().Contains(city.ToLower())) &&
                         (string.IsNullOrEmpty(country) || h.Country.ToLower().Contains(country.ToLower())) &&
                         (!starRating.HasValue || h.StarRating >= starRating.Value) &&
                         (!hotelStatus.HasValue || h.Status == hotelStatus.Value)
-                    )
-                    .ToListAsync();
+                    );
+            var totalCount = await query.CountAsync();
+            var hotels = await query.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            return (hotels, totalCount);
         }
 
         public async Task UpdateAsync(Domain.Entities.Hotel hotel)

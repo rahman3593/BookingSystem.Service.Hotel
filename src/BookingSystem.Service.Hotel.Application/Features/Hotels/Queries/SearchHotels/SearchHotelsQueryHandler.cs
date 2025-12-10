@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookingSystem.Service.Hotel.Application.Common.Interfaces;
+using BookingSystem.Service.Hotel.Application.Common.Models;
 using BookingSystem.Service.Hotel.Application.DTOs;
 using MediatR;
 
 namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.SearchHotels
 {
-    public class SearchHotelsQueryHandler : IRequestHandler<SearchHotelsQuery, List<HotelDto>>
+    public class SearchHotelsQueryHandler : IRequestHandler<SearchHotelsQuery, PagedResponse<HotelDto>>
     {
         private readonly IHotelRepository _hotelRepository;
         private readonly IMapper _mapper;
@@ -20,11 +21,11 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Queries.Search
             _mapper = mapper;
         }
 
-        public async Task<List<HotelDto>> Handle(SearchHotelsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<HotelDto>> Handle(SearchHotelsQuery request, CancellationToken cancellationToken)
         {
-            var hotels = await _hotelRepository.SearchAsync(request.City, request.Country, request.MinStarRating, request.Status);
+            var (hotels,totalCount) = await _hotelRepository.SearchAsync(request.City, request.Country, request.MinStarRating, request.Status, request.PageNumber, request.PageSize);
             var hoteDtos = _mapper.Map<List<HotelDto>>(hotels);
-            return hoteDtos;
+            return new PagedResponse<HotelDto>(hoteDtos, request.PageNumber, request.PageSize, totalCount);
         }
     }
 }
