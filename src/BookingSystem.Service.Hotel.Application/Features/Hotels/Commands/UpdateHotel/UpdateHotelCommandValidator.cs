@@ -39,6 +39,10 @@ namespace BookingSystem.Service.Hotel.Application.Features.Hotels.Commands.Updat
             RuleFor(x => x.Street)
                 .MaximumLength(100)
                 .When(x => !string.IsNullOrWhiteSpace(x.Street))
+                .WithMessage("Street must not exceed 100 characters");
+            RuleFor(x => x.State)
+                .MaximumLength(100)
+                .When(x => !string.IsNullOrWhiteSpace(x.State))
                 .WithMessage("State must not exceed 100 characters");
             RuleFor(x => x.ZipCode)
                 .MaximumLength(20)

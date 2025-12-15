@@ -86,7 +86,6 @@ namespace BookingSystem.Service.Hotel.UnitTests.Features.Hotels.Commands
 
             //Assert
             capturedHotel.Should().NotBeNull();
-            capturedHotel.Should().NotBeNull();
             capturedHotel!.Name.Should().Be(command.Name);
             capturedHotel.Description.Should().Be(command.Description);
             capturedHotel.Street.Should().Be(command.Street);
